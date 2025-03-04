@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תחרות התחפושות של נחמיה</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+    <div class="container">
+        <h1>תחרות התחפושות של נחמיה</h1>
+        
+        <div class="upload-section">
+            <h2>בחר/י דרך להעלאת תמונה:</h2>
+            <div class="upload-options">
+                <div class="upload-option" id="file-upload-option">
+                    <h3>העלאת תמונה מהמחשב</h3>
+                    <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                    <button onclick="document.getElementById('image-upload').click()">בחר/י תמונה</button>
+                </div>
+                <div class="upload-option" id="instagram-option">
+                    <h3>שימוש בתמונת פרופיל מאינסטגרם</h3>
+                    <input type="text" id="instagram-username" placeholder="הכנס/י שם משתמש באינסטגרם">
+                    <button id="fetch-instagram">הבא/י תמונה</button>
+                </div>
+            </div>
+            <div class="error-message" id="error-message"></div>
+        </div>
+
+        <div class="preview-section">
+            <div class="preview-container">
+                <h3>תמונה מקורית</h3>
+                <img id="original-preview" class="preview-image" style="display: none;">
+            </div>
+            <div class="preview-container">
+                <h3>תחפושת AI</h3>
+                <img id="costume-preview" class="preview-image" style="display: none;">
+            </div>
+        </div>
+
+        <div class="result-section" id="result-section">
+            <h2>התחפושת שלך מוכנה!</h2>
+            <p id="costume-description"></p>
+            <div class="share-buttons">
+                <button onclick="shareOnInstagram()">שתף/י באינסטגרם</button>
+                <button onclick="downloadImage()">הורד/י תמונה</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script src="/js/main.js"></script>
+</body>
+</html> 
