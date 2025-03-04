@@ -5,7 +5,7 @@
   "scripts": {
     "start": "netlify dev",
     "build": "npm run copy-files",
-    "copy-files": "mkdir -p public && cp -r src/styles public/ && cp -r src/js public/ && cp -r src/images public/"
+    "copy-files": "if not exist public mkdir public && xcopy /E /I /Y src\\styles public\\styles && xcopy /E /I /Y src\\js public\\js && xcopy /E /I /Y src\\images public\\images"
   },
   "dependencies": {
     "express": "^4.18.2",
