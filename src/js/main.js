@@ -19,13 +19,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 const imageUrl = URL.createObjectURL(file);
                 showOriginalImage(imageUrl);
                 
-                // שליחת התמונה לשרת
-                const formData = new FormData();
-                formData.append('image', file);
+                // המרת התמונה ל-base64
+                const base64Image = await convertToBase64(file);
                 
-                const response = await fetch('/api/generate-costume', {
+                // שליחת התמונה לפונקציית נטליפי
+                const response = await fetch('/.netlify/functions/generate-costume', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ image: base64Image })
                 });
                 
                 const data = await response.json();
@@ -54,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         showLoading(true);
         try {
-            const response = await fetch(`/api/instagram-profile/${username}`);
+            const response = await fetch(`/.netlify/functions/instagram-profile?username=${username}`);
             const data = await response.json();
             
             if (data.error) {
@@ -62,12 +65,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             showOriginalImage(data.profileImageUrl);
-            const costumeResponse = await fetch('/api/generate-costume', {
+            const costumeResponse = await fetch('/.netlify/functions/generate-costume', {
                 method: 'POST',
-                body: JSON.stringify({ imageUrl: data.profileImageUrl }),
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({ image: data.profileImageUrl })
             });
             
             const costumeData = await costumeResponse.json();
@@ -106,11 +109,19 @@ document.addEventListener('DOMContentLoaded', function() {
             errorMessage.style.display = 'none';
         }, 5000);
     }
+
+    async function convertToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+        });
+    }
 });
 
 function shareOnInstagram() {
     const costumeImage = document.getElementById('costume-preview').src;
-    // בעתיד - הוספת אינטגרציה עם Instagram Sharing API
     alert('פונקציונליות השיתוף לאינסטגרם בפיתוח');
 }
 
